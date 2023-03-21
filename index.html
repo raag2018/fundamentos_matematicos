@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos Matematicos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .modal {
+            position: fixed;
+            top: -100vh;
+            left: 0;
+            z-index: 99999999;
+            background: rgba(0, 0, 0, 0.75);
+            width: 100vw;
+            height: 100vh;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .modal .container-modal {
+            width: 100%;
+            max-width: 500px;
+            position: fixed;
+            left: 50%;
+            top: -100vh;
+            transition: top 0.35s ease;
+            margin-left: -250px;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+            z-index: 9999999;
+        }
+
+        .modal h2 {
+            padding: 0.5em;
+            text-align: center;
+            color: #444;
+            margin: 0;
+        }
+
+        .modal article {
+            height: 300px;
+            background: #bc651a;
+        }
+
+        .close-modal {
+            color: #e74c3c;
+            position: absolute;
+            top: 0.2em;
+            right: 0.375em;
+            margin: 0;
+            padding: 5px;
+            font-weight: bold;
+            font-size: 1.5em;
+            text-decoration: none;
+        }
+
+        .modal a:hover {
+            color: #c0392b;
+        }
+
+        .modal:target {
+            opacity: 1;
+            top: 0;
+        }
+
+        .modal .btn-close-modal {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999991;
+        }
+
+        .modal:target .container-modal {
+            top: 50px;
+            transition: top 0.35s ease;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Ingresar numero de conjunto a calcular</label>
+                        <input type="text" class="form-control" id="txtNumero" placeholder="5">
+                    </div>
+                    <button type="button" id="calcular" class="btn btn-primary">Calcular</button>
+                </form>
+            </div>
+            <div class="col-12 my-3 border-radius border-primary bg-primary py-3 overflow-auto">
+                <label for="" class="badge badge-success ">Calculo de (a^2) % n</label>
+                <div id="tabla"></div>
+            </div>
+            <div class="col-12 my-3 border-radius border-primary bg-primary py-3 overflow-auto">
+                <label for="" class="badge badge-success ">Conjunto obtenido de a</label>
+                <div id="conjunto">
+
+                </div>
+            </div>
+            <div class="col-12">
+                <div id="cifrado">
+
+                </div>
+                <a href="#modal">ver modal</a>
+            </div>
+        </div>
+    </div>
+
+    <aside id='modal' class='modal'>
+        <div class='container-modal'>
+            <header>
+                <a href='#' class='close-modal'>X</a>
+                <h2> titulo</h2>
+            </header>
+            <article></article>
+        </div>
+        <!--a href='#' class='btn-close-modal'></a-->
+    </aside>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        let dibujar = document.getElementById("tabla");
+        let conjunto = document.getElementById("conjunto");
+       
+        let a = 3;
+        let n = 10;
+        let text = "Los gusanos del amazonas y el cuy no son faciles de cocinar ";
+
+        if (!String.prototype.trim) {
+            (function () {
+                // Make sure we trim BOM and NBSP
+                var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+                String.prototype.trim = function () {
+                    return this.replace(rtrim, '');
+                };
+            })();
+        }
+        //console.log(text.trim());
+        function cifrar(text, filas) {
+            let longitud = text.length;
+            if ((longitud % 2) != 0) {
+                let div_long = (longitud + (longitud % 2)) / filas;
+                longitud = (longitud + (longitud % 2));
+                let aum = 0;
+                for (let i = 0; i < div_long; i++) {
+                    for (let j = 0; j < filas; j++) {
+                        if ((aum % filas) == 0) {
+                            console.log(aum);
+                            dibujar.innerHTML += "<br/>";
+                        }
+                        dibujar.innerHTML += "|" + text[aum] + "|";
+                        aum += 1;
+                    }
+                }
+            } else {
+                let div_long = (longitud + (longitud % 2)) / filas;
+                longitud = (longitud + (longitud % 2));
+                let aum = 0;
+                for (let i = 0; i < div_long; i++) {
+                    for (let j = 0; j < filas; j++) {
+                        if ((aum % filas) == 0) {
+                            //console.log(aum);
+                            dibujar.innerHTML += "<br/>";
+                        }
+                        dibujar.innerHTML += "|" + text[aum] + "|";
+                        aum += 1;
+                    }
+                }
+            }
+        }
+        function tabla(a, b) {
+            for (let i = 0; i < b; i++) {
+                let j = i + 1;
+                let op = a * j;
+                console.log(a * i);
+                dibujar.innerHTML += a + " x " + j + " = " + op + "<br/>";
+            }
+        }
+        const getModa = (datos, n) => {
+            console.log(datos);
+            let maximoNumRepeticiones = 0;
+            let moda = '';
+            let muestra = datos.split("|");
+            let new_muestra = [];
+            let numRepeticiones = 0;
+            let j = 0;
+            console.log(muestra.length,n);
+            if (muestra.length == n) {
+                
+                for (let k = 0; k <= (muestra.length - 1); k++) {
+                    
+                    new_muestra.push(muestra[k].split(","));
+                    if (new_muestra.length == n) {
+                        for (let i = 0; i <= new_muestra[k].length; i++) {
+                            if (i > 0) {
+                                if ((i - 1) < (n - 1)) {
+                                    let res = '';
+                                    let number = '';
+                                    for (let index = 0; index < new_muestra[i].length; index++) {
+                                        new_muestra[i].sort(function (a, b) {
+                                            return (a - b);
+                                        });
+                                        if (new_muestra[i][index] > 0 && (new_muestra[i][index] !== new_muestra[i][index - 1])) {
+                                             console.log(i,index,new_muestra[i][index]);
+                                            number += `${new_muestra[i][index]},`;
+                                        }
+                                    }
+                                    res += ` <br> ${i - 1} => {${number}} \n`;
+                                    moda += ` ${res} \n`;
+                                }
+                            }
+                            j++;
+                        }
+                    }
+                    console.log(moda);
+                    conjunto.innerHTML += moda;
+                }
+            }
+        }   //fin getModa
+        const modular = (txtNumero) => {
+            let na = txtNumero;
+            let aum = 0;
+            let res;
+            let arrn = [];
+            let datos = '';
+            if (txtNumero !== '' && parseInt(txtNumero) > 5) {
+                for (let i = 0; i < na; i++) {
+                    for (let j = 0; j < na; j++) {
+                        if ((j % na) == 0) {
+                            dibujar.innerHTML += "<br/>[" + i + "] => ";
+                            if (i < na) {
+                                datos += `|`;
+                            }
+                        }
+                        res = (Math.pow(i, j)) % na;
+                        if (i < na) {
+                            datos += `${parseInt(res)},`;
+                        }
+                        dibujar.innerHTML += "|" + res + "|";
+                    }
+                }
+                aum++;
+                let number = parseInt(na) + 1;
+                getModa(datos, number);
+            } else {
+                alert("Debe ingresar un numero");
+            }
+
+        }
+        $(document).ready(function () {
+            $(document).on('click', '#calcular', function (e) {
+                e.preventDefault();
+                let txtNumero = document.getElementById("txtNumero").value;
+                modular(txtNumero);
+            });
+        });
+
+    </script>
+</body>
+
+</html>
